@@ -42,7 +42,7 @@ export default function Sobre() {
               className="absolute -bottom-6 left-8 glass rounded-xl px-5 py-3"
               style={{ border: '1px solid rgba(0,180,255,0.2)' }}
             >
-              <div className="font-display text-3xl text-[#00B4FF]">5+</div>
+              <div className="font-display text-3xl text-[#00B4FF]">2+</div>
 
               <div className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">
                 Anos de experiência
