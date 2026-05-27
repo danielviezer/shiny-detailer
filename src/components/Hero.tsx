@@ -98,9 +98,9 @@ export default function Hero() {
           {/* Stats */}
           <div className="flex gap-8 mt-14">
             {[
-              { n: 'Mais de 500', l: 'Carros atendidos' },
+              { n: 'Mais de 200', l: 'Carros atendidos' },
               { n: '5★', l: 'Avaliação média' },
-              { n: '5+', l: 'Anos de experiência' },
+              { n: '2+', l: 'Anos de experiência' },
             ].map(s => (
               <div key={s.l}>
                 <div className="font-display text-2xl md:text-3xl text-white">
