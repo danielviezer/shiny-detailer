@@ -72,16 +72,9 @@ Arquivo: `src/components/Hero.tsx`
 <p>Proteção e estética de alto padrão...</p>
 
 // Edite os números de estatísticas:
-<<<<<<< HEAD
-{ n: '200+', l: 'Veículos' },   ← edite aqui
+{ n: '200+', l: 'Veículos' },
 { n: '5★', l: 'Avaliação' },
 { n: '2+', l: 'Anos' },
-=======
-{ n: '200+', l: 'Veículos' },   ← edite aqui
-{ n: '5★', l: 'Avaliação' },
-{ n: '2+', l: 'Anos' },
->>>>>>> 2bf491ae7c64108bdd8b53ce6835473c8daf705b
-```
 
 ### Editar a seção "Sobre Nós"
 Arquivo: `src/components/Sobre.tsx`
