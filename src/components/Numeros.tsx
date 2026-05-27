@@ -11,10 +11,17 @@ export default function RodaStrip() {
       <div className="relative max-w-7xl mx-auto px-4 md:px-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {[
+<<<<<<< HEAD
             { n: '200+', desc: 'Veículos atendidos', icon: '🚗' },
             { n: '5★', desc: 'Avaliação média', icon: '⭐' },
             { n: '100%', desc: 'Satisfação garantida', icon: '✅' },
             { n: '2+', desc: 'Anos de experiência', icon: '🏆' },
+=======
+            { n: '500+', desc: 'Veículos atendidos', icon: '🚗' },
+            { n: '5★', desc: 'Avaliação média', icon: '⭐' },
+            { n: '100%', desc: 'Satisfação garantida', icon: '✅' },
+            { n: '5+', desc: 'Anos de experiência', icon: '🏆' },
+>>>>>>> 2bf491ae7c64108bdd8b53ce6835473c8daf705b
           ].map(s => (
             <div key={s.n}
               className="glass text-center py-8 px-4 rounded-2xl"
