@@ -11,29 +11,28 @@ export default function RodaStrip() {
       <div className="relative max-w-7xl mx-auto px-4 md:px-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {[
-<<<<<<< HEAD
-            { n: '200+', desc: 'Veículos atendidos', icon: '🚗' },
-            { n: '5★', desc: 'Avaliação média', icon: '⭐' },
-            { n: '100%', desc: 'Satisfação garantida', icon: '✅' },
-            { n: '2+', desc: 'Anos de experiência', icon: '🏆' },
-=======
             { n: '500+', desc: 'Veículos atendidos', icon: '🚗' },
             { n: '5★', desc: 'Avaliação média', icon: '⭐' },
             { n: '100%', desc: 'Satisfação garantida', icon: '✅' },
             { n: '5+', desc: 'Anos de experiência', icon: '🏆' },
->>>>>>> 2bf491ae7c64108bdd8b53ce6835473c8daf705b
           ].map(s => (
-            <div key={s.n}
+            <div
+              key={s.n}
               className="glass text-center py-8 px-4 rounded-2xl"
               style={{ border: '1px solid rgba(0,180,255,0.1)' }}
             >
               <div className="text-3xl mb-3">{s.icon}</div>
-              <div className="font-display text-4xl md:text-5xl text-[#00B4FF] mb-2"
+
+              <div
+                className="font-display text-4xl md:text-5xl text-[#00B4FF] mb-2"
                 style={{ textShadow: '0 0 20px rgba(0,180,255,0.3)' }}
               >
                 {s.n}
               </div>
-              <div className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">{s.desc}</div>
+
+              <div className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">
+                {s.desc}
+              </div>
             </div>
           ))}
         </div>
