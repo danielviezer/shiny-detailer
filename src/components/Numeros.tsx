@@ -4,7 +4,7 @@ export default function RodaStrip() {
   return (
     <section className="relative py-20 overflow-hidden" style={{ background: '#050810' }}>
       <div className="absolute inset-0 opacity-10">
-        <Image src="/images/roda_f250.jpg" alt="" fill className="object-cover object-center" />
+        <Image src="/images/pickup_motor.jpg" alt="" fill className="object-cover object-center" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #050810 0%, transparent 50%, #050810 100%)' }} />
       </div>
 

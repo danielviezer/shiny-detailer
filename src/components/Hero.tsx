@@ -20,8 +20,8 @@ export default function Hero() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/corvette_de_frente.jpg"
-          alt="Corvette Shiny Car Studio"
+          src="/images/cla_frente.jpg"
+          alt="Mercedes CLA no Shiny Car Studio"
           fill
           priority
           className="object-cover object-center"

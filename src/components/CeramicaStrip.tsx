@@ -1,11 +1,11 @@
 import Image from 'next/image'
 
-export default function TeslaStrip() {
+export default function CeramicaStrip() {
   return (
     <section className="relative h-[50vh] min-h-[300px] overflow-hidden">
       <Image
-        src="/images/tesla.jpg"
-        alt="Tesla detailing"
+        src="/images/pickup_frente.jpg"
+        alt="Pick-up preta com proteção cerâmica"
         fill
         className="object-cover object-center"
       />

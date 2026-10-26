@@ -4,8 +4,8 @@ export default function InteriorStrip() {
   return (
     <section className="relative h-[40vh] min-h-[280px] overflow-hidden">
       <Image
-        src="/images/interior_f250.jpg"
-        alt="Interior premium F250"
+        src="/images/cla_interior.jpg"
+        alt="Interior premium Mercedes CLA"
         fill
         className="object-cover object-center"
       />

@@ -49,9 +49,9 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
     <section id="agendamento" className="py-20 md:py-32 relative overflow-hidden"
       style={{ background: '#080D1A' }}
     >
-      {/* F250 background subtle */}
+      {/* background subtle */}
       <div className="absolute inset-0 opacity-[0.04]">
-        <Image src="/images/roda_f250.jpg" alt="" fill className="object-cover object-center" />
+        <Image src="/images/pickup_motor.jpg" alt="" fill className="object-cover object-center" />
       </div>
 
       <div className="relative max-w-2xl mx-auto px-4 md:px-0">

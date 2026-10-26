@@ -36,8 +36,14 @@ export default function Footer() {
           <div>
             <h4 className="font-condensed text-xs tracking-[0.2em] uppercase text-[#00B4FF] mb-5">Contato</h4>
             <ul className="space-y-3 text-[#8898B3] text-sm font-light">
-              <li>📍 Itajaí, Santa Catarina</li>
+              <li>📍 Antonio Manoel Correa, 263 · Itajaí, SC</li>
               <li>📱 (47) 9 9747-8717</li>
+              <li>
+                ✉️{' '}
+                <a href="mailto:detailershiny@gmail.com" className="hover:text-white transition-colors">
+                  detailershiny@gmail.com
+                </a>
+              </li>
               <li>
                 <a
                   href="https://wa.me/5547997478717"

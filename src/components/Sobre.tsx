@@ -19,7 +19,7 @@ export default function Sobre() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
               <Image
-                src="/images/corvette_de_costas.jpg"
+                src="/images/virtus_frente.jpg"
                 alt="Shiny Car Studio trabalho"
                 fill
                 className="object-cover"

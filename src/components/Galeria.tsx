@@ -2,12 +2,12 @@
 import Image from 'next/image'
 
 const fotos = [
-  { src: '/images/corvette_de_costas.jpg', label: 'Corvette', sub: 'Lavagem Detalhada' },
-  { src: '/images/tesla.jpg', label: 'Tesla', sub: 'Coating Cerâmico' },
-  { src: '/images/frente_f250.jpg', label: 'Ford F-250', sub: 'Detalhamento Completo' },
-  { src: '/images/roda_f250.jpg', label: 'F-250 Detail', sub: 'Proteção de Rodas' },
-  { src: '/images/interior_f250.jpg', label: 'F-250 Interior', sub: 'Higienização Premium' },
-  { src: '/images/frente_nivus_preta.jpg', label: 'Nivus', sub: 'Lavagem Artesanal' },
+  { src: '/images/virtus_frente.jpg', label: 'VW Virtus', sub: 'Lavagem Detalhada' },
+  { src: '/images/cla_frente.jpg', label: 'Mercedes CLA', sub: 'Coating Cerâmico' },
+  { src: '/images/pickup_frente.jpg', label: 'Pick-up Preta', sub: 'Detalhamento Completo' },
+  { src: '/images/pickup_motor.jpg', label: 'Pick-up Preta', sub: 'Lavagem de Motor' },
+  { src: '/images/cla_interior.jpg', label: 'Mercedes CLA', sub: 'Higienização Premium' },
+  { src: '/images/fox_frente.jpg', label: 'VW Fox', sub: 'Lavagem Artesanal' },
 ]
 
 export default function Galeria() {

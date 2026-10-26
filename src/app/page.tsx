@@ -5,7 +5,7 @@ import Hero from '@/components/Hero'
 import Servicos from '@/components/Servicos'
 import Galeria from '@/components/Galeria'
 import Sobre from '@/components/Sobre'
-import TeslaStrip from '@/components/TeslaStrip'
+import CeramicaStrip from '@/components/CeramicaStrip'
 import InteriorStrip from '@/components/InteriorStrip'
 import Numeros from '@/components/Numeros'
 import Agendamento from '@/components/Agendamento'
@@ -30,7 +30,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Servicos onAgendar={handleAgendar} />
-      <TeslaStrip />
+      <CeramicaStrip />
       <Galeria />
       <Numeros />
       <Sobre />
