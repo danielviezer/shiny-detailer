@@ -32,13 +32,38 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
   // Expose jump-to-step-2 function to parent
   useEffect(() => {
     if (onJumpToStep2) {
-      onJumpToStep2(() => setStep(2))
+      // já passou do passo 1? vai pro 2. senão, fica nos dados (serviço já vem escolhido)
+      onJumpToStep2(() => setStep(p => (p === 1 ? 1 : 2)))
     }
   }, [onJumpToStep2])
 
+  const [erros, setErros] = useState<Record<string, string>>({})
+
+  const validar = (campos: [string, string, string][]) => {
+    const e: Record<string, string> = {}
+    campos.forEach(([k, valor, msg]) => { if (!valor.trim()) e[k] = msg })
+    setErros(e)
+    const primeiro = campos.find(([k]) => e[k])
+    if (primeiro) document.getElementById(`ag-${primeiro[0]}`)?.focus()
+    return !primeiro
+  }
+
+  const irPasso2 = () => {
+    if (validar([
+      ['nome', form.nome, 'Digite seu nome'],
+      ['whats', form.whatsapp, 'Digite seu WhatsApp'],
+      ['veiculo', form.veiculo, 'Informe o veículo'],
+    ])) setStep(2)
+  }
+
+  const irPasso3 = () => {
+    if (validar([['servico', form.servico, 'Escolha um serviço']])) setStep(3)
+  }
+
   const confirmar = () => {
+    const quando = dataBR ? `para o dia *${dataBR}*` : 'com data a combinar'
     const msg = encodeURIComponent(
-      `Olá! Gostaria de agendar o serviço *${form.servico}* para o dia *${form.data}*.\n\nNome: ${form.nome}\nWhatsApp: ${form.whatsapp}\nVeículo: ${form.veiculo}`
+      `Olá! Gostaria de agendar o serviço *${form.servico}* ${quando}.\n\nNome: ${form.nome}\nWhatsApp: ${form.whatsapp}\nVeículo: ${form.veiculo}`
     )
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank')
   }
@@ -85,24 +110,31 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
           <div className="rounded-3xl border border-line bg-graphite p-5 md:p-8">
             {step === 1 && (
               <div className="expand space-y-4">
+                {form.servico && (
+                  <p className="rounded-2xl border border-line px-4 py-3 text-[14px] text-white/80">
+                    Serviço escolhido: <strong className="text-white font-medium">{form.servico}</strong>
+                  </p>
+                )}
                 <div>
                   <label htmlFor="ag-nome" className="field-label">Nome completo</label>
-                  <input id="ag-nome" className="field" placeholder="Seu nome" autoComplete="name" value={form.nome} onChange={e => set('nome', e.target.value)} />
+                  <input id="ag-nome" className="field" placeholder="Seu nome" autoComplete="name" value={form.nome} onChange={e => { set('nome', e.target.value); setErros(x => ({ ...x, nome: '' })) }} aria-invalid={!!erros.nome} />
+                  {erros.nome && <p role="alert" className="mt-1.5 text-[13px] text-[#ff8a80]">{erros.nome}</p>}
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="ag-whats" className="field-label">WhatsApp</label>
-                    <input id="ag-whats" className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="(47) 9 0000-0000" value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} />
+                    <input id="ag-whats" className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="(47) 9 0000-0000" value={form.whatsapp} onChange={e => { set('whatsapp', e.target.value); setErros(x => ({ ...x, whats: '' })) }} aria-invalid={!!erros.whats} />
+                    {erros.whats && <p role="alert" className="mt-1.5 text-[13px] text-[#ff8a80]">{erros.whats}</p>}
                   </div>
                   <div>
                     <label htmlFor="ag-veiculo" className="field-label">Veículo</label>
-                    <input id="ag-veiculo" className="field" placeholder="Ex: Honda Civic 2023" value={form.veiculo} onChange={e => set('veiculo', e.target.value)} />
+                    <input id="ag-veiculo" className="field" placeholder="Ex: Honda Civic 2023" value={form.veiculo} onChange={e => { set('veiculo', e.target.value); setErros(x => ({ ...x, veiculo: '' })) }} aria-invalid={!!erros.veiculo} />
+                    {erros.veiculo && <p role="alert" className="mt-1.5 text-[13px] text-[#ff8a80]">{erros.veiculo}</p>}
                   </div>
                 </div>
                 <button
-                  onClick={() => setStep(2)}
-                  disabled={!form.nome || !form.whatsapp || !form.veiculo}
-                  className="btn-primary w-full !mt-6 disabled:opacity-35 disabled:cursor-not-allowed disabled:active:scale-100"
+                  onClick={irPasso2}
+                  className="btn-primary w-full !mt-6"
                 >
                   Continuar
                 </button>
@@ -118,7 +150,8 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
                       id="ag-servico"
                       className="field appearance-none pr-10 cursor-pointer"
                       value={form.servico}
-                      onChange={e => set('servico', e.target.value)}
+                      onChange={e => { set('servico', e.target.value); setErros(x => ({ ...x, servico: '' })) }}
+                      aria-invalid={!!erros.servico}
                       style={{ colorScheme: 'dark' }}
                     >
                       <option value="">Selecione um serviço...</option>
@@ -158,9 +191,10 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
                       <path d="m3.5 6 4.5 4.5L12.5 6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
+                  {erros.servico && <p role="alert" className="mt-1.5 text-[13px] text-[#ff8a80]">{erros.servico}</p>}
                 </div>
                 <div>
-                  <label htmlFor="ag-data" className="field-label">Data desejada</label>
+                  <label htmlFor="ag-data" className="field-label">Data desejada <span className="text-white/40">(opcional)</span></label>
                   <input
                     id="ag-data"
                     type="date"
@@ -173,9 +207,8 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
                 <div className="flex gap-3 !mt-6">
                   <button onClick={() => setStep(1)} className="btn-ghost flex-1">Voltar</button>
                   <button
-                    onClick={() => setStep(3)}
-                    disabled={!form.servico || !form.data}
-                    className="btn-primary flex-[1.4] disabled:opacity-35 disabled:cursor-not-allowed disabled:active:scale-100"
+                    onClick={irPasso3}
+                    className="btn-primary flex-[1.4]"
                   >
                     Continuar
                   </button>
@@ -191,7 +224,7 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
                     { l: 'WhatsApp', v: form.whatsapp },
                     { l: 'Veículo', v: form.veiculo },
                     { l: 'Serviço', v: form.servico },
-                    { l: 'Data', v: dataBR },
+                    { l: 'Data', v: dataBR || 'A combinar' },
                   ].map(r => (
                     <div key={r.l} className="flex justify-between gap-4 py-3 border-b border-line text-[15px]">
                       <dt className="text-muted">{r.l}</dt>

@@ -2,12 +2,12 @@
 import { useState } from 'react'
 
 const categories = [
-  { id: 'pacotes', label: 'Pacotes' },
   { id: 'interno', label: 'Tratamento Interno' },
   { id: 'externo', label: 'Tratamento Externo' },
   { id: 'motos', label: 'Motos' },
   { id: 'inferior', label: 'Inferior & Motor' },
   { id: 'acabamentos', label: 'Acabamentos e Detalhes' },
+  { id: 'pacotes', label: 'Pacotes' },
 ]
 
 interface Servico {
@@ -185,7 +185,7 @@ function Chevron({ open }: { open: boolean }) {
 }
 
 export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void }) {
-  const [cat, setCat] = useState('pacotes')
+  const [cat, setCat] = useState('externo')
   const [aberto, setAberto] = useState<number | null>(null)
   const lista = services[cat]
 

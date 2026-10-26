@@ -58,14 +58,14 @@ section[id], footer[id] { scroll-margin-top: 64px; }
   }
 }
 
-/* Foto P&B: identidade do cartão e do logo */
+/* Fotos em cor (sem filtro P&B) */
 .photo-mono {
-  filter: grayscale(1) contrast(1.08) brightness(0.92);
+  filter: none;
   transition: filter 700ms ease;
 }
 .photo-reveal[data-active='true'] .photo-mono,
 .photo-reveal:hover .photo-mono {
-  filter: grayscale(0) contrast(1) brightness(1);
+  filter: none;
 }
 
 /* O momento da página: um reflexo de luz atravessa a foto, como no verniz polido */
