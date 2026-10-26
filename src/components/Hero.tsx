@@ -24,7 +24,8 @@ export default function Hero() {
           alt="Mercedes CLA no Shiny Car Studio"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover"
+          style={{ objectPosition: 'center' }}
         />
         {/* Layered overlays for cinematic effect */}
         <div className="absolute inset-0" style={{

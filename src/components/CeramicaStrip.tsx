@@ -7,7 +7,8 @@ export default function CeramicaStrip() {
         src="/images/pickup_frente.jpg"
         alt="Pick-up preta com proteção cerâmica"
         fill
-        className="object-cover object-center"
+        className="object-cover"
+        style={{ objectPosition: 'center' }}
       />
       <div className="absolute inset-0" style={{
         background: 'linear-gradient(90deg, rgba(5,8,16,0.95) 0%, rgba(5,8,16,0.7) 50%, rgba(5,8,16,0.85) 100%)'

@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-export default function RodaStrip() {
+export default function Numeros() {
   return (
     <section className="relative py-20 overflow-hidden" style={{ background: '#050810' }}>
-      <div className="absolute inset-0 opacity-10">
-        <Image src="/images/pickup_motor.jpg" alt="" fill className="object-cover object-center" />
+      <div className="absolute inset-0 opacity-25">
+        <Image src="/images/arte_shiny.jpg" alt="" fill className="object-cover object-right" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #050810 0%, transparent 50%, #050810 100%)' }} />
       </div>
 

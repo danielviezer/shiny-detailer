@@ -7,7 +7,8 @@ export default function InteriorStrip() {
         src="/images/cla_interior.jpg"
         alt="Interior premium Mercedes CLA"
         fill
-        className="object-cover object-center"
+        className="object-cover"
+        style={{ objectPosition: 'center 48%' }}
       />
       <div className="absolute inset-0" style={{
         background: 'linear-gradient(90deg, rgba(5,8,16,0.5) 0%, rgba(5,8,16,0.9) 100%)'

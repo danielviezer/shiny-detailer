@@ -2,12 +2,12 @@
 import Image from 'next/image'
 
 const fotos = [
-  { src: '/images/virtus_frente.jpg', label: 'VW Virtus', sub: 'Lavagem Detalhada' },
-  { src: '/images/cla_frente.jpg', label: 'Mercedes CLA', sub: 'Coating Cerâmico' },
-  { src: '/images/pickup_frente.jpg', label: 'Pick-up Preta', sub: 'Detalhamento Completo' },
-  { src: '/images/pickup_motor.jpg', label: 'Pick-up Preta', sub: 'Lavagem de Motor' },
-  { src: '/images/cla_interior.jpg', label: 'Mercedes CLA', sub: 'Higienização Premium' },
-  { src: '/images/fox_frente.jpg', label: 'VW Fox', sub: 'Lavagem Artesanal' },
+  { src: '/images/virtus_frente.jpg', label: 'VW Virtus', sub: 'Lavagem Detalhada', pos: 'center' },
+  { src: '/images/cla_frente.jpg', label: 'Mercedes CLA', sub: 'Coating Cerâmico', pos: 'center' },
+  { src: '/images/pickup_frente.jpg', label: 'Pick-up Preta', sub: 'Detalhamento Completo', pos: 'center' },
+  { src: '/images/pickup_motor.jpg', label: 'Pick-up Preta', sub: 'Lavagem de Motor', pos: 'center 55%' },
+  { src: '/images/cla_interior.jpg', label: 'Mercedes CLA', sub: 'Higienização Premium', pos: 'center 48%' },
+  { src: '/images/fox_frente.jpg', label: 'VW Fox', sub: 'Lavagem Artesanal', pos: 'center 60%' },
 ]
 
 export default function Galeria() {
@@ -20,19 +20,19 @@ export default function Galeria() {
           <p className="text-[#8898B3] font-light">Cada projeto tratado com obsessão pelos detalhes.</p>
         </div>
 
-        {/* Asymmetric grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {fotos.map((f, i) => (
+        {/* Grid uniforme 3x2 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {fotos.map(f => (
             <div
               key={f.src}
-              className={`relative overflow-hidden rounded-xl group ${i === 0 ? 'col-span-2 md:col-span-1 md:row-span-2' : ''}`}
-              style={{ aspectRatio: i === 0 ? '16/9' : '4/3' }}
+              className="relative overflow-hidden rounded-xl group aspect-[4/3]"
             >
               <Image
                 src={f.src}
                 alt={f.label}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ objectPosition: f.pos }}
               />
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-transparent to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300" />

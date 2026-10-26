@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="relative w-10 h-10 rounded-full overflow-hidden ring-1 ring-[#00B4FF]/30">
-                <Image src="/images/logo_shiny.jpg" alt="Shiny Car Studio" fill className="object-cover" />
+                <Image src="/images/logo_shiny.jpg" alt="Shiny Car Studio" fill className="object-contain bg-black" />
               </div>
               <span className="font-display text-xl tracking-widest text-white">
                 SHINY <span className="text-[#00B4FF]">CAR STUDIO</span>
@@ -24,9 +24,14 @@ export default function Footer() {
           <div>
             <h4 className="font-condensed text-xs tracking-[0.2em] uppercase text-[#00B4FF] mb-5">Navegação</h4>
             <ul className="space-y-3">
-              {['Serviços', 'Galeria', 'Sobre Nós', 'Agendamento'].map(l => (
-                <li key={l}>
-                  <span className="text-[#8898B3] text-sm font-light hover:text-white transition-colors cursor-pointer">{l}</span>
+              {[
+                { l: 'Serviços', href: '#servicos' },
+                { l: 'Galeria', href: '#galeria' },
+                { l: 'Sobre Nós', href: '#sobre' },
+                { l: 'Agendamento', href: '#agendamento' },
+              ].map(i => (
+                <li key={i.href}>
+                  <a href={i.href} className="text-[#8898B3] text-sm font-light hover:text-white transition-colors">{i.l}</a>
                 </li>
               ))}
             </ul>
@@ -55,13 +60,16 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+            <div className="relative mt-6 w-full max-w-xs aspect-[1050/600] rounded-xl overflow-hidden ring-1 ring-[#00B4FF]/20">
+              <Image src="/images/arte_contato.jpg" alt="Cartão Shiny Car Studio com telefone, email e endereço" fill className="object-cover" />
+            </div>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="border-t border-[rgba(0,180,255,0.06)] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-[#8898B3] text-xs font-light">
-            © 2024 Shiny Car Studio. Todos os direitos reservados.
+            © 2026 Shiny Car Studio. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00B4FF] animate-pulse" />

@@ -23,6 +23,7 @@ export default function Sobre() {
                 alt="Shiny Car Studio trabalho"
                 fill
                 className="object-cover"
+                style={{ objectPosition: 'center' }}
               />
 
               <div
@@ -68,7 +69,7 @@ export default function Sobre() {
               </p>
 
               <p>
-                Localizada em Itajaí, atendemos veículos de alto padrão
+                Localizada em Itajaí, cuidamos do seu veículo
                 com o mesmo nível de cuidado que uma concessionária premium
                 — só que com resultado superior.
               </p>
