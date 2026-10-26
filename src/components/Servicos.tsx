@@ -160,10 +160,10 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
   const isPacotes = cat === 'pacotes'
 
   return (
-    <section id="servicos" className="py-20 md:py-32 bg-[#050810]">
+    <section id="servicos" className="py-12 md:py-32 bg-[#050810]">
       <div className="max-w-7xl mx-auto px-4 md:px-10">
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-6 md:mb-12">
           <div className="neon-line mb-4" />
           <h2 className="font-display text-4xl md:text-6xl text-white mb-3">NOSSOS SERVIÇOS</h2>
           <p className="text-[#8898B3] font-light max-w-lg">
@@ -172,13 +172,13 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
         </div>
 
         {/* Tabs — vertical no mobile, horizontal no desktop */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-1">
+        <div className="mb-6 md:mb-10">
+          <div className="no-scrollbar flex md:flex-wrap gap-2 md:gap-1 overflow-x-auto md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 pb-1">
             {categories.map(c => (
               <button
                 key={c.id}
                 onClick={() => setCat(c.id)}
-                className={`px-4 py-2.5 rounded font-condensed text-sm tracking-widest uppercase transition-all duration-300 text-left md:whitespace-nowrap ${
+                className={`px-3 md:px-4 py-2 md:py-2.5 rounded font-condensed text-xs md:text-sm tracking-widest uppercase transition-all duration-300 whitespace-nowrap shrink-0 ${
                   cat === c.id
                     ? 'bg-[#00B4FF] text-white font-semibold'
                     : 'text-[#8898B3] hover:text-white border border-[rgba(0,180,255,0.15)] hover:border-[rgba(0,180,255,0.4)]'
@@ -192,14 +192,14 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
 
         {/* Cards — Pacotes layout */}
         {isPacotes ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {services['pacotes'].map((s, i) => {
               const isMensal = !!s.badge
               const isDestaque = i === 2 && !isMensal
               return (
                 <div
                   key={s.nome}
-                  className={`glass rounded-2xl p-7 card-hover flex flex-col relative overflow-hidden ${isMensal ? 'md:col-span-3' : ''}`}
+                  className={`glass rounded-2xl p-5 md:p-7 card-hover flex flex-col relative overflow-hidden ${isMensal ? 'md:col-span-3' : ''}`}
                   style={{
                     border: isMensal
                       ? '1px solid rgba(0,180,255,0.45)'
@@ -233,7 +233,7 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
                   )}
 
                   <div className="w-8 h-px bg-[#00B4FF] mb-4 opacity-60" />
-                  <h3 className="font-display text-3xl text-white mb-1 tracking-wide">{s.nome.toUpperCase()}</h3>
+                  <h3 className="font-display text-2xl md:text-3xl text-white mb-1 tracking-wide">{s.nome.toUpperCase()}</h3>
                   <div className="font-condensed text-[#00B4FF] font-semibold text-xl mb-4">{s.preco}</div>
                   <p className="text-[#8898B3] text-sm font-light leading-relaxed mb-5">{s.desc}</p>
 
@@ -253,9 +253,11 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
                   )}
 
                   {s.indicado && (
-                    <div className="mb-6">
-                      <div className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-3">Indicado para</div>
-                      <ul className="space-y-2">
+                    <details className="mb-5 md:mb-6 group/ind md:[&>summary]:pointer-events-none" >
+                      <summary className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] cursor-pointer list-none flex items-center justify-between py-1 md:mb-2">
+                        Indicado para <span className="md:hidden text-[#00B4FF] group-open/ind:rotate-180 transition-transform">⌄</span>
+                      </summary>
+                      <ul className="space-y-2 mt-2">
                         {s.indicado.map((item, j) => (
                           <li key={j} className="flex gap-2 text-[#8898B3] text-xs font-light leading-relaxed">
                             <span className="text-[#00B4FF] mt-0.5 shrink-0">→</span>
@@ -263,7 +265,7 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
                           </li>
                         ))}
                       </ul>
-                    </div>
+                    </details>
                   )}
 
                   <div className="mt-auto">
@@ -277,19 +279,19 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
           </div>
         ) : (
           /* Cards — Serviços normais */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {services[cat].map((s, i) => (
               <div
                 key={s.nome + i}
-                className="glass rounded-xl p-6 card-hover flex flex-col justify-between"
+                className="glass rounded-xl p-4 md:p-6 card-hover flex flex-col justify-between"
                 style={{ border: '1px solid rgba(0,180,255,0.08)' }}
               >
                 <div>
-                  <div className="w-8 h-px bg-[#00B4FF] mb-4 opacity-60" />
-                  <h3 className="font-condensed font-semibold text-lg text-white mb-2 tracking-wide">{s.nome}</h3>
-                  <p className="text-[#8898B3] text-sm font-light leading-relaxed mb-4">{s.desc}</p>
+                  <div className="hidden md:block w-8 h-px bg-[#00B4FF] mb-4 opacity-60" />
+                  <h3 className="font-condensed font-semibold text-base md:text-lg text-white mb-1.5 md:mb-2 tracking-wide">{s.nome}</h3>
+                  <p className="text-[#8898B3] text-sm font-light leading-relaxed mb-3 md:mb-4 line-clamp-3 md:line-clamp-none">{s.desc}</p>
                 </div>
-                <div>
+                <div className={s.precos ? '' : 'flex items-center justify-between gap-3 md:block'}>
                   {/* Preços múltiplos (Lavagem Detalhada externa) */}
                   {s.precos ? (
                     <div className="flex gap-3 mb-4 flex-wrap">
@@ -303,9 +305,9 @@ export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void
                       ))}
                     </div>
                   ) : (
-                    <div className="font-condensed text-[#00B4FF] font-semibold text-base mb-4">{s.preco}</div>
+                    <div className="font-condensed text-[#00B4FF] font-semibold text-base md:mb-4">{s.preco}</div>
                   )}
-                  <button onClick={() => onAgendar(s.nome)} className="neon-btn w-full py-2.5 text-xs rounded">
+                  <button onClick={() => onAgendar(s.nome)} className={`neon-btn py-2 md:py-2.5 text-xs rounded ${s.precos ? 'w-full' : 'px-6 md:px-0 md:w-full'}`}>
                     Agendar
                   </button>
                 </div>

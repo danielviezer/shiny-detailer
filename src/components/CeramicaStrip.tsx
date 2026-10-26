@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function CeramicaStrip() {
   return (
-    <section className="relative h-[50vh] min-h-[300px] overflow-hidden">
+    <section className="relative h-[42vh] md:h-[50vh] min-h-[260px] md:min-h-[300px] overflow-hidden">
       <Image
         src="/images/pickup_frente.jpg"
         alt="Pick-up preta com proteção cerâmica"
@@ -22,7 +22,7 @@ export default function CeramicaStrip() {
         <div className="max-w-7xl mx-auto px-6 md:px-10 w-full">
           <div className="max-w-xl">
             <div className="font-condensed text-xs tracking-[0.3em] uppercase text-[#00B4FF] mb-3">Tecnologia & Proteção</div>
-            <h3 className="font-display text-4xl md:text-6xl text-white mb-4">
+            <h3 className="font-display text-3xl md:text-6xl text-white mb-3 md:mb-4">
               PROTEÇÃO<br />
               <span className="text-[#00B4FF]">CERÂMICA</span>
             </h3>

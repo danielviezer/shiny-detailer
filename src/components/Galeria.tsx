@@ -12,20 +12,20 @@ const fotos = [
 
 export default function Galeria() {
   return (
-    <section id="galeria" className="py-20 md:py-32" style={{ background: '#080D1A' }}>
+    <section id="galeria" className="py-12 md:py-32" style={{ background: '#080D1A' }}>
       <div className="max-w-7xl mx-auto px-4 md:px-10">
-        <div className="mb-12">
+        <div className="mb-6 md:mb-12">
           <div className="neon-line mb-4" />
           <h2 className="font-display text-4xl md:text-6xl text-white mb-3">NOSSOS TRABALHOS</h2>
           <p className="text-[#8898B3] font-light">Cada projeto tratado com obsessão pelos detalhes.</p>
         </div>
 
         {/* Grid uniforme 3x2 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="no-scrollbar flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
           {fotos.map(f => (
             <div
               key={f.src}
-              className="relative overflow-hidden rounded-xl group aspect-[4/3]"
+              className="relative overflow-hidden rounded-xl group aspect-[4/3] shrink-0 w-[82%] sm:w-[48%] snap-center md:w-auto"
             >
               <Image
                 src={f.src}
@@ -46,6 +46,7 @@ export default function Galeria() {
             </div>
           ))}
         </div>
+        <p className="md:hidden text-center text-[#8898B3] text-xs font-light mt-3">← arraste pro lado →</p>
       </div>
     </section>
   )

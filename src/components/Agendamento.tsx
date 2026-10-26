@@ -46,7 +46,7 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
   const inputClass = "w-full bg-[rgba(8,13,26,0.8)] border border-[rgba(0,180,255,0.15)] rounded-lg px-4 py-3.5 text-white placeholder-[#8898B3] text-sm font-light focus:outline-none focus:border-[#00B4FF] transition-all duration-300"
 
   return (
-    <section id="agendamento" className="py-20 md:py-32 relative overflow-hidden"
+    <section id="agendamento" className="py-12 md:py-32 relative overflow-hidden"
       style={{ background: '#080D1A' }}
     >
       {/* background subtle */}

@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function Sobre() {
   return (
-    <section id="sobre" className="py-20 md:py-32 bg-[#050810] relative overflow-hidden">
+    <section id="sobre" className="py-12 md:py-32 bg-[#050810] relative overflow-hidden">
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 rounded-full opacity-5"
@@ -13,7 +13,7 @@ export default function Sobre() {
       />
 
       <div className="max-w-7xl mx-auto px-4 md:px-10">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
 
           {/* Image side */}
           <div className="relative">
@@ -75,7 +75,7 @@ export default function Sobre() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-2 md:mb-8">
               {[
                 {
                   icon: '⚡',
@@ -100,10 +100,10 @@ export default function Sobre() {
               ].map(i => (
                 <div
                   key={i.t}
-                  className="glass rounded-xl p-4"
+                  className="glass rounded-xl p-3 md:p-4"
                   style={{ border: '1px solid rgba(0,180,255,0.08)' }}
                 >
-                  <div className="text-2xl mb-2">{i.icon}</div>
+                  <div className="text-xl md:text-2xl mb-1 md:mb-2">{i.icon}</div>
 
                   <div className="font-condensed font-semibold text-white text-sm mb-1">
                     {i.t}

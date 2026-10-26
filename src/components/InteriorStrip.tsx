@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function InteriorStrip() {
   return (
-    <section className="relative h-[40vh] min-h-[280px] overflow-hidden">
+    <section className="relative h-[34vh] md:h-[40vh] min-h-[240px] md:min-h-[280px] overflow-hidden">
       <Image
         src="/images/cla_interior.jpg"
         alt="Interior premium Mercedes CLA"
@@ -18,7 +18,7 @@ export default function InteriorStrip() {
         <div className="max-w-7xl mx-auto px-6 md:px-10 w-full text-right">
           <div className="max-w-lg ml-auto">
             <div className="font-condensed text-xs tracking-[0.3em] uppercase text-[#00B4FF] mb-3">Higienização de Luxo</div>
-            <h3 className="font-display text-4xl md:text-5xl text-white mb-3">
+            <h3 className="font-display text-3xl md:text-5xl text-white mb-2 md:mb-3">
               INTERIOR<br />
               <span className="text-[#00B4FF]">IMPECÁVEL</span>
             </h3>
