@@ -1,138 +1,61 @@
-'use client'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { WHATSAPP_URL, IconWhatsApp, IconPin, IconList, IconCalendar } from './contato'
+
+const fatos = [
+  { icon: IconPin, t: 'Studio em Itajaí, SC' },
+  { icon: IconList, t: '15 serviços e 4 pacotes' },
+  { icon: IconCalendar, t: 'Agendamento pelo WhatsApp' },
+]
 
 export default function Hero() {
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 100)
-    return () => clearTimeout(t)
-  }, [])
-
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
-    <section id="hero" className="relative w-full h-screen min-h-[600px] flex items-center overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/cla_frente.jpg"
-          alt="Mercedes CLA no Shiny Car Studio"
-          fill
-          priority
-          className="object-cover"
-          style={{ objectPosition: 'center' }}
-        />
-        {/* Layered overlays for cinematic effect */}
-        <div className="absolute inset-0" style={{
-          background: 'linear-gradient(135deg, rgba(5,8,16,0.92) 0%, rgba(8,13,26,0.75) 50%, rgba(5,8,16,0.85) 100%)'
-        }} />
-        <div className="absolute inset-0" style={{
-          background: 'radial-gradient(ellipse at 30% 50%, rgba(0,100,180,0.15) 0%, transparent 60%)'
-        }} />
-        {/* Scanline effect */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 4px)'
-        }} />
-      </div>
-
-      {/* Neon accent line left */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5" style={{
-        background: 'linear-gradient(180deg, transparent, rgba(0,180,255,0.6) 40%, rgba(0,180,255,0.6) 60%, transparent)'
-      }} />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
-        <div
-          className="max-w-3xl transition-all duration-1000"
-          style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(30px)' }}
-        >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full"
-            style={{ border: '1px solid rgba(0,180,255,0.25)', background: 'rgba(0,180,255,0.06)' }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00B4FF] animate-pulse" />
-            <span className="font-condensed text-xs tracking-[0.2em] uppercase text-[#00B4FF]">
-              Detalhamento Premium · Itajaí
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="font-display text-6xl md:text-8xl lg:text-[110px] leading-none text-white mb-4">
-            ONDE O<br />
-            <span style={{ color: '#00B4FF', textShadow: '0 0 40px rgba(0,180,255,0.4)' }}>
-              DETALHE
-            </span><br />
-            DEFINE TUDO
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            className="text-[#8898B3] text-base md:text-lg font-light max-w-xl mb-10 leading-relaxed"
-            style={{ transitionDelay: '200ms' }}
-          >
-            Proteção e estética de alto padrão para veículos que merecem o melhor.
-            Tecnologia, precisão e paixão em cada acabamento.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => scrollTo('#agendamento')}
-              className="neon-btn px-8 py-4 text-sm rounded"
-            >
-              Agendar Serviço
-            </button>
-
-            <button
-              onClick={() => scrollTo('#servicos')}
-              className="outline-btn px-8 py-4 text-sm rounded"
-            >
-              Ver Serviços
-            </button>
-          </div>
-
-          {/* Stats */}
-          <div className="flex gap-8 mt-14">
-            {[
-              { n: 'Mais de 200', l: 'Carros atendidos' },
-              { n: '5★', l: 'Avaliação média' },
-              { n: '2+', l: 'Anos de experiência' },
-            ].map(s => (
-              <div key={s.l}>
-                <div className="font-display text-2xl md:text-3xl text-white">
-                  {s.n}
-                </div>
-
-                <div className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">
-                  {s.l}
-                </div>
-              </div>
-            ))}
+    <section id="inicio" className="relative">
+      <div className="max-w-[1320px] mx-auto md:px-10 md:pt-24 md:pb-10 md:grid md:grid-cols-12 md:gap-10 md:items-center md:min-h-[min(100svh,860px)]">
+        {/* Foto */}
+        <div className="relative md:col-span-7 md:col-start-6 md:row-start-1">
+          <div className="shine relative aspect-[1260/1170] md:rounded-[28px] overflow-hidden">
+            <Image
+              src="/images/cla_frente.jpg"
+              alt="Mercedes-Benz CLA branco recém-detalhado no Shiny Car Studio"
+              fill
+              priority
+              sizes="(min-width: 768px) 60vw, 100vw"
+              className="photo-mono object-cover"
+              style={{ objectPosition: '50% 60%' }}
+            />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/60 to-transparent md:hidden" />
+            <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/80 to-transparent md:hidden" />
           </div>
         </div>
+
+        {/* Texto */}
+        <div className="relative z-10 px-4 -mt-24 md:mt-0 md:px-0 md:col-span-5 md:col-start-1 md:row-start-1">
+          <h1 className="rise font-wide font-light text-[38px] xs:text-[42px] leading-[1.02] tracking-[-0.02em] md:text-[64px] lg:text-[76px]">
+            Onde o detalhe define tudo.
+          </h1>
+          <p className="rise mt-4 md:mt-6 text-[16px] md:text-[18px] leading-relaxed text-white/75 max-w-[34ch]" style={{ animationDelay: '120ms' }}>
+            Detalhamento automotivo em Itajaí: higienização interna, lavagem detalhada, coating e polimento.
+          </p>
+          <div className="rise mt-6 md:mt-9 flex flex-col sm:flex-row gap-2.5 sm:gap-3" style={{ animationDelay: '220ms' }}>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <IconWhatsApp /> Agendar no WhatsApp
+            </a>
+            <a href="#servicos" className="btn-ghost">
+              Ver serviços e preços
+            </a>
+          </div>
+        </div>
+
+        {/* Fatos verificáveis */}
+        <ul className="mx-4 md:mx-0 mt-7 md:mt-4 md:col-span-12 grid grid-cols-3 border-y border-line md:border-y-0 md:border-t">
+          {fatos.map(({ icon: Icon, t }, i) => (
+            <li key={t} className={`flex flex-col md:flex-row md:items-center gap-2 md:gap-3 py-4 md:py-5 text-[12.5px] md:text-[14px] leading-snug text-white/80 ${i ? 'pl-3 md:pl-8 border-l border-line' : 'pr-2'}`}>
+              <Icon className="w-5 h-5 text-silver shrink-0" />
+              {t}
+            </li>
+          ))}
+        </ul>
       </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
-        <span className="font-condensed text-[10px] tracking-[0.3em] uppercase text-[#8898B3]">
-          Scroll
-        </span>
-
-        <div className="w-px h-10 bg-gradient-to-b from-[#00B4FF] to-transparent animate-pulse" />
-      </div>
-
-      {/* Bottom gradient */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32"
-        style={{
-          background: 'linear-gradient(transparent, #050810)'
-        }}
-      />
     </section>
   )
 }

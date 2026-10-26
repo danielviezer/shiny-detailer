@@ -2,12 +2,12 @@
 import { useState } from 'react'
 
 const categories = [
+  { id: 'pacotes', label: 'Pacotes' },
   { id: 'interno', label: 'Tratamento Interno' },
   { id: 'externo', label: 'Tratamento Externo' },
   { id: 'motos', label: 'Motos' },
   { id: 'inferior', label: 'Inferior & Motor' },
   { id: 'acabamentos', label: 'Acabamentos e Detalhes' },
-  { id: 'pacotes', label: 'Pacotes' },
 ]
 
 interface Servico {
@@ -155,172 +155,172 @@ const services: Record<string, Servico[]> = {
   ],
 }
 
+const mensalItens = ['3 lavagens por mês', 'Plano personalizado', 'Assinatura recorrente', 'Atendimento prioritário']
+
+// Nome igual ao da opção no formulário de agendamento
+function nomeAgendamento(cat: string, s: Servico) {
+  if (cat === 'pacotes') return s.badge ? s.nome : `${s.nome} (Pacote)`
+  if (cat === 'motos') return `${s.nome} (Moto)`
+  return s.nome
+}
+
+function precoPartes(s: Servico): { prefixo: string; valor: string } {
+  if (s.precos) {
+    const vals = s.precos.map(p => p.valor.replace('R$', ''))
+    return { prefixo: 'Hatch a SUV', valor: `R$${vals[0]}–${vals[vals.length - 1]}` }
+  }
+  if (s.preco.startsWith('A partir de ')) return { prefixo: 'A partir de', valor: s.preco.replace('A partir de ', '') }
+  return { prefixo: '', valor: s.preco }
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={`w-4 h-4 shrink-0 text-white/60 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+      viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"
+    >
+      <path d="m3.5 6 4.5 4.5L12.5 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export default function Servicos({ onAgendar }: { onAgendar: (s: string) => void }) {
-  const [cat, setCat] = useState('interno')
-  const isPacotes = cat === 'pacotes'
+  const [cat, setCat] = useState('pacotes')
+  const [aberto, setAberto] = useState<number | null>(null)
+  const lista = services[cat]
+
+  const trocar = (id: string) => {
+    setCat(id)
+    setAberto(null)
+  }
 
   return (
-    <section id="servicos" className="py-12 md:py-32 bg-[#050810]">
-      <div className="max-w-7xl mx-auto px-4 md:px-10">
-        {/* Header */}
-        <div className="mb-6 md:mb-12">
-          <div className="neon-line mb-4" />
-          <h2 className="font-display text-4xl md:text-6xl text-white mb-3">NOSSOS SERVIÇOS</h2>
-          <p className="text-[#8898B3] font-light max-w-lg">
-            Selecione a categoria e descubra o que podemos fazer pelo seu veículo.
+    <section id="servicos" className="pt-10 pb-11 md:py-28 md:border-t md:border-line">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-10 md:grid md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-4 lg:col-span-3 md:sticky md:top-24 md:self-start">
+          <h2 className="font-wide font-light text-[28px] md:text-[40px] leading-[1.08] tracking-[-0.01em]">
+            Serviços e preços
+          </h2>
+          <p className="mt-3 text-[15px] text-white/70 leading-relaxed max-w-[36ch]">
+            Toque em um serviço para ver os detalhes e agendar.
           </p>
-        </div>
 
-        {/* Tabs — vertical no mobile, horizontal no desktop */}
-        <div className="mb-6 md:mb-10">
-          <div className="no-scrollbar flex md:flex-wrap gap-2 md:gap-1 overflow-x-auto md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 pb-1">
-            {categories.map(c => (
-              <button
-                key={c.id}
-                onClick={() => setCat(c.id)}
-                className={`px-3 md:px-4 py-2 md:py-2.5 rounded font-condensed text-xs md:text-sm tracking-widest uppercase transition-all duration-300 whitespace-nowrap shrink-0 ${
-                  cat === c.id
-                    ? 'bg-[#00B4FF] text-white font-semibold'
-                    : 'text-[#8898B3] hover:text-white border border-[rgba(0,180,255,0.15)] hover:border-[rgba(0,180,255,0.4)]'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Cards — Pacotes layout */}
-        {isPacotes ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {services['pacotes'].map((s, i) => {
-              const isMensal = !!s.badge
-              const isDestaque = i === 2 && !isMensal
+          <div
+            role="tablist"
+            aria-label="Categorias de serviço"
+            className="no-scrollbar mt-6 md:mt-10 -mx-4 px-4 md:mx-0 md:px-0 flex md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-visible md:border-t md:border-line"
+          >
+            {categories.map(c => {
+              const ativo = cat === c.id
               return (
-                <div
-                  key={s.nome}
-                  className={`glass rounded-2xl p-5 md:p-7 card-hover flex flex-col relative overflow-hidden ${isMensal ? 'md:col-span-3' : ''}`}
-                  style={{
-                    border: isMensal
-                      ? '1px solid rgba(0,180,255,0.45)'
-                      : isDestaque
-                      ? '1px solid rgba(0,180,255,0.3)'
-                      : '1px solid rgba(0,180,255,0.1)',
-                    background: isMensal
-                      ? 'linear-gradient(135deg, rgba(0,70,150,0.2), rgba(0,180,255,0.06))'
-                      : undefined,
-                  }}
+                <button
+                  key={c.id}
+                  role="tab"
+                  id={`tab-${c.id}`}
+                  aria-selected={ativo}
+                  aria-controls="painel-servicos"
+                  onClick={() => trocar(c.id)}
+                  className={`shrink-0 min-h-[44px] px-4 rounded-full border text-[14px] whitespace-nowrap transition-colors
+                    md:rounded-none md:border-0 md:border-b md:border-line md:px-0 md:py-4 md:flex md:items-center md:justify-between md:text-[15px]
+                    ${ativo
+                      ? 'bg-white text-black border-white md:bg-transparent md:text-white'
+                      : 'border-white/20 text-white/75 hover:text-white hover:border-white/50 md:text-white/55'}`}
                 >
-                  {/* Top accent line for mensal */}
-                  {isMensal && (
-                    <div className="absolute top-0 left-0 right-0 h-0.5"
-                      style={{ background: 'linear-gradient(90deg, transparent, #00B4FF, transparent)' }}
-                    />
-                  )}
-
-                  {/* Badge */}
-                  {(isMensal || isDestaque) && (
-                    <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full self-start"
-                      style={{
-                        background: isMensal ? 'rgba(0,180,255,0.15)' : 'rgba(0,180,255,0.12)',
-                        border: isMensal ? '1px solid rgba(0,180,255,0.45)' : '1px solid rgba(0,180,255,0.3)',
-                      }}
-                    >
-                      <span className="font-condensed text-[10px] tracking-[0.2em] uppercase text-[#00B4FF]">
-                        {isMensal ? '📋 Plano Mensal' : 'Mais Completo'}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="w-8 h-px bg-[#00B4FF] mb-4 opacity-60" />
-                  <h3 className="font-display text-2xl md:text-3xl text-white mb-1 tracking-wide">{s.nome.toUpperCase()}</h3>
-                  <div className="font-condensed text-[#00B4FF] font-semibold text-xl mb-4">{s.preco}</div>
-                  <p className="text-[#8898B3] text-sm font-light leading-relaxed mb-5">{s.desc}</p>
-
-                  {/* Feature bullets for mensal */}
-                  {isMensal && (
-                    <div className="flex flex-wrap gap-4 mb-5">
-                      {['3 lavagens por mês', 'Plano personalizado', 'Assinatura recorrente', 'Atendimento prioritário'].map(f => (
-                        <span key={f} className="flex items-center gap-2 text-[#8898B3] text-xs">
-                          <svg width="14" height="14" viewBox="0 0 14 14">
-                            <circle cx="7" cy="7" r="7" fill="rgba(0,180,255,0.15)" />
-                            <path d="M4 7l2 2 4-4" stroke="#00B4FF" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                          </svg>
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {s.indicado && (
-                    <details className="mb-5 md:mb-6 group/ind md:[&>summary]:pointer-events-none" >
-                      <summary className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] cursor-pointer list-none flex items-center justify-between py-1 md:mb-2">
-                        Indicado para <span className="md:hidden text-[#00B4FF] group-open/ind:rotate-180 transition-transform">⌄</span>
-                      </summary>
-                      <ul className="space-y-2 mt-2">
-                        {s.indicado.map((item, j) => (
-                          <li key={j} className="flex gap-2 text-[#8898B3] text-xs font-light leading-relaxed">
-                            <span className="text-[#00B4FF] mt-0.5 shrink-0">→</span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  )}
-
-                  <div className="mt-auto">
-                    <button onClick={() => onAgendar(s.nome)} className="neon-btn w-full py-3 text-xs rounded-lg">
-                      {isMensal ? 'Agendar Avaliação' : 'Agendar este pacote'}
-                    </button>
-                  </div>
-                </div>
+                  <span className="md:flex md:items-center md:gap-3">
+                    <span className={`hidden md:inline-block h-px bg-white transition-all duration-300 ${ativo ? 'w-6' : 'w-0'}`} aria-hidden="true" />
+                    {c.label}
+                  </span>
+                  <span className={`ml-2 tabular-nums text-[12px] ${ativo ? 'text-black/55 md:text-white/60' : 'text-white/45'}`}>
+                    {services[c.id].length}
+                  </span>
+                </button>
               )
             })}
           </div>
-        ) : (
-          /* Cards — Serviços normais */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {services[cat].map((s, i) => (
-              <div
-                key={s.nome + i}
-                className="glass rounded-xl p-4 md:p-6 card-hover flex flex-col justify-between"
-                style={{ border: '1px solid rgba(0,180,255,0.08)' }}
-              >
-                <div>
-                  <div className="hidden md:block w-8 h-px bg-[#00B4FF] mb-4 opacity-60" />
-                  <h3 className="font-condensed font-semibold text-base md:text-lg text-white mb-1.5 md:mb-2 tracking-wide">{s.nome}</h3>
-                  <p className="text-[#8898B3] text-sm font-light leading-relaxed mb-3 md:mb-4 line-clamp-3 md:line-clamp-none">{s.desc}</p>
-                </div>
-                <div className={s.precos ? '' : 'flex items-center justify-between gap-3 md:block'}>
-                  {/* Preços múltiplos (Lavagem Detalhada externa) */}
-                  {s.precos ? (
-                    <div className="flex gap-3 mb-4 flex-wrap">
-                      {s.precos.map(p => (
-                        <div key={p.label} className="text-center glass rounded-lg px-3 py-2"
-                          style={{ border: '1px solid rgba(0,180,255,0.15)' }}
-                        >
-                          <div className="font-condensed text-[10px] tracking-widest uppercase text-[#8898B3]">{p.label}</div>
-                          <div className="font-condensed font-semibold text-[#00B4FF] text-sm">{p.valor}</div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="font-condensed text-[#00B4FF] font-semibold text-base md:mb-4">{s.preco}</div>
-                  )}
-                  <button onClick={() => onAgendar(s.nome)} className={`neon-btn py-2 md:py-2.5 text-xs rounded ${s.precos ? 'w-full' : 'px-6 md:px-0 md:w-full'}`}>
-                    Agendar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+        </div>
 
-      <style jsx>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+        <ul
+          id="painel-servicos"
+          role="tabpanel"
+          aria-labelledby={`tab-${cat}`}
+          className="mt-5 md:mt-0 md:col-span-8 lg:col-span-8 lg:col-start-5 border-t border-line"
+        >
+          {lista.map((s, i) => {
+            const open = aberto === i
+            const { prefixo, valor } = precoPartes(s)
+            const id = `serv-${cat}-${i}`
+            return (
+              <li key={cat + s.nome} className={`border-b border-line transition-colors ${open ? 'bg-white/[0.03]' : ''}`}>
+                <button
+                  onClick={() => setAberto(open ? null : i)}
+                  aria-expanded={open}
+                  aria-controls={id}
+                  className="w-full min-h-[64px] md:min-h-[76px] flex items-center gap-4 text-left py-3.5 md:py-5 md:px-4 group"
+                >
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-[16px] md:text-[19px] leading-snug text-white group-hover:text-white">
+                      {s.nome}
+                    </span>
+                    {s.badge && (
+                      <span className="mt-1.5 inline-block rounded-full border border-white/30 px-2.5 py-0.5 text-[12px] text-silver">
+                        {s.badge}
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-right shrink-0">
+                    {prefixo && <span className="block text-[11.5px] text-muted leading-tight">{prefixo}</span>}
+                    <span className="block font-semiwide text-[16px] md:text-[18px] font-medium tabular-nums whitespace-nowrap">{valor}</span>
+                  </span>
+                  <Chevron open={open} />
+                </button>
+
+                {open && (
+                  <div id={id} className="expand pb-5 md:px-4 md:pb-7 md:pr-16">
+                    <p className="text-[15px] leading-relaxed text-white/75 max-w-[62ch]">{s.desc}</p>
+
+                    {s.precos && (
+                      <dl className="mt-4 grid grid-cols-3 gap-2 max-w-sm">
+                        {s.precos.map(p => (
+                          <div key={p.label} className="rounded-xl border border-line px-3 py-2.5">
+                            <dt className="text-[12px] text-muted">{p.label}</dt>
+                            <dd className="font-semiwide text-[16px] font-medium tabular-nums">{p.valor}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+
+                    {s.badge && (
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {mensalItens.map(f => (
+                          <li key={f} className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[13px] text-white/85">{f}</li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {s.indicado && (
+                      <div className="mt-5">
+                        <h3 className="text-[13px] text-muted mb-2">Indicado para</h3>
+                        <ul className="space-y-2">
+                          {s.indicado.map(item => (
+                            <li key={item} className="flex gap-3 text-[14px] leading-relaxed text-white/75 max-w-[60ch]">
+                              <span className="mt-[0.7em] h-px w-3 bg-white/50 shrink-0" aria-hidden="true" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <button onClick={() => onAgendar(nomeAgendamento(cat, s))} className="btn-primary mt-5 w-full xs:w-auto">
+                      {s.badge ? 'Agendar avaliação' : cat === 'pacotes' ? 'Agendar este pacote' : 'Agendar este serviço'}
+                    </button>
+                  </div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </section>
   )
 }

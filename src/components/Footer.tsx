@@ -1,81 +1,58 @@
 import Image from 'next/image'
+import {
+  WHATSAPP_URL, TELEFONE, EMAIL, ENDERECO, CIDADE, MAPS_URL,
+  IconPin, IconMail, IconWhatsApp,
+} from './contato'
 
 export default function Footer() {
+  const itens = [
+    { icon: IconWhatsApp, l: TELEFONE, href: WHATSAPP_URL, ext: true },
+    { icon: IconMail, l: EMAIL, href: `mailto:${EMAIL}`, ext: false },
+    { icon: IconPin, l: `${ENDERECO} · ${CIDADE}`, href: MAPS_URL, ext: true },
+  ]
+
   return (
-    <footer className="bg-[#050810] border-t border-[rgba(0,180,255,0.08)] pt-10 md:pt-16 pb-6 md:pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 mb-8 md:mb-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden ring-1 ring-[#00B4FF]/30">
-                <Image src="/images/logo_shiny.jpg" alt="Shiny Car Studio" fill className="object-contain bg-black" />
-              </div>
-              <span className="font-display text-xl tracking-widest text-white">
-                SHINY <span className="text-[#00B4FF]">CAR STUDIO</span>
-              </span>
-            </div>
-            <p className="text-[#8898B3] text-sm font-light leading-relaxed max-w-xs">
-              Detalhamento automotivo premium em Itajaí, Santa Catarina. Onde o detalhe define tudo.
+    <footer id="contato" className="border-t border-line pt-10 md:pt-20 pb-24 md:pb-10">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-10 grid gap-10 md:grid-cols-12 md:gap-10 md:items-center">
+        <div className="md:col-span-6 lg:col-span-5">
+          <div className="flex items-center justify-between gap-4">
+            <Image src="/images/logo_wide.jpg" alt="Logo Shiny Car Studio" width={540} height={240} className="w-[150px] md:w-[190px] h-auto -ml-2" />
+            <p className="text-[14px] text-white/65 leading-snug max-w-[20ch] text-right">
+              Detalhamento automotivo em Itajaí, Santa Catarina.
             </p>
           </div>
 
-          {/* Links */}
-          <div>
-            <h4 className="font-condensed text-xs tracking-[0.2em] uppercase text-[#00B4FF] mb-5">Navegação</h4>
-            <ul className="space-y-3">
-              {[
-                { l: 'Serviços', href: '#servicos' },
-                { l: 'Galeria', href: '#galeria' },
-                { l: 'Sobre Nós', href: '#sobre' },
-                { l: 'Agendamento', href: '#agendamento' },
-              ].map(i => (
-                <li key={i.href}>
-                  <a href={i.href} className="text-[#8898B3] text-sm font-light hover:text-white transition-colors">{i.l}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-condensed text-xs tracking-[0.2em] uppercase text-[#00B4FF] mb-5">Contato</h4>
-            <ul className="space-y-3 text-[#8898B3] text-sm font-light">
-              <li>📍 Antonio Manoel Correa, 263 · Itajaí, SC</li>
-              <li>📱 (47) 9 9747-8717</li>
-              <li>
-                ✉️{' '}
-                <a href="mailto:detailershiny@gmail.com" className="hover:text-white transition-colors">
-                  detailershiny@gmail.com
-                </a>
-              </li>
-              <li>
+          <ul className="mt-6 border-t border-line">
+            {itens.map(({ icon: Icon, l, href, ext }) => (
+              <li key={l} className="border-b border-line">
                 <a
-                  href="https://wa.me/5547997478717"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#00B4FF] hover:underline mt-2"
+                  href={href}
+                  {...(ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="flex items-center gap-3.5 min-h-[54px] text-[15px] text-white/85 hover:text-white transition-colors break-all"
                 >
-                  WhatsApp Direto →
+                  <Icon className="w-5 h-5 text-silver shrink-0" />
+                  {l}
                 </a>
               </li>
-            </ul>
-            <div className="relative mt-6 w-full max-w-xs aspect-[1050/600] rounded-xl overflow-hidden ring-1 ring-[#00B4FF]/20">
-              <Image src="/images/arte_contato.jpg" alt="Cartão Shiny Car Studio com telefone, email e endereço" fill className="object-cover" />
-            </div>
+            ))}
+          </ul>
+        </div>
+
+        <div className="md:col-span-6 lg:col-span-6 lg:col-start-7">
+          <div className="relative aspect-[1050/600] w-full max-w-[520px] md:ml-auto rounded-2xl overflow-hidden border border-line">
+            <Image
+              src="/images/arte_contato.jpg"
+              alt={`Cartão Shiny Car Studio: ${TELEFONE}, ${EMAIL}, ${ENDERECO}`}
+              fill
+              sizes="(min-width: 768px) 520px, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-[rgba(0,180,255,0.06)] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[#8898B3] text-xs font-light">
-            © 2026 Shiny Car Studio. Todos os direitos reservados.
-          </p>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00B4FF] animate-pulse" />
-            <span className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">Itajaí · SC</span>
-          </div>
-        </div>
+        <p className="md:col-span-12 text-[13px] text-white/50 border-t border-line pt-6">
+          © 2026 Shiny Car Studio. Todos os direitos reservados.
+        </p>
       </div>
     </footer>
   )

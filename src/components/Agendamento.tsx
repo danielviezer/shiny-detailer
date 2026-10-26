@@ -1,14 +1,14 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
-
-const WHATSAPP_NUMBER = '5547997478717'
+import { WHATSAPP_NUMBER, WHATSAPP_URL, TELEFONE, IconWhatsApp } from './contato'
 
 interface Props {
   servicoSelecionado?: string
   onClear?: () => void
   onJumpToStep2?: (fn: () => void) => void
 }
+
+const etapas = ['Seus dados', 'Serviço e data', 'Confirmar']
 
 export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2 }: Props) {
   const [step, setStep] = useState(1)
@@ -43,89 +43,86 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank')
   }
 
-  const inputClass = "w-full bg-[rgba(8,13,26,0.8)] border border-[rgba(0,180,255,0.15)] rounded-lg px-4 py-3.5 text-white placeholder-[#8898B3] text-sm font-light focus:outline-none focus:border-[#00B4FF] transition-all duration-300"
+  const dataBR = form.data ? form.data.split('-').reverse().join('/') : ''
 
   return (
-    <section id="agendamento" className="py-12 md:py-32 relative overflow-hidden"
-      style={{ background: '#080D1A' }}
-    >
-      {/* background subtle */}
-      <div className="absolute inset-0 opacity-[0.04]">
-        <Image src="/images/pickup_motor.jpg" alt="" fill className="object-cover" style={{ objectPosition: 'center 55%' }} />
-      </div>
-
-      <div className="relative max-w-2xl mx-auto px-4 md:px-0">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-4">
-            <div className="neon-line" style={{ width: '60px' }} />
-          </div>
-          <h2 className="font-display text-4xl md:text-6xl text-white mb-3">AGENDAR SERVIÇO</h2>
-          <p className="text-[#8898B3] font-light">Preencha os dados e falaremos pelo WhatsApp.</p>
+    <section id="agendamento" className="py-11 md:py-28 border-t border-line">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-10 md:grid md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-5 lg:col-span-4">
+          <h2 className="font-wide font-light text-[28px] md:text-[40px] leading-[1.08] tracking-[-0.01em]">
+            Agendar serviço
+          </h2>
+          <p className="mt-3 text-[15px] md:text-[16px] text-white/70 leading-relaxed max-w-[38ch]">
+            Três passos rápidos. No fim, o WhatsApp abre com a mensagem pronta para enviar.
+          </p>
+          <p className="hidden md:block mt-10 text-[14px] text-muted">Prefere conversar direto?</p>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex mt-2 items-center gap-2.5 text-[17px] text-white underline decoration-white/30 underline-offset-[6px] hover:decoration-white min-h-[44px]"
+          >
+            <IconWhatsApp /> {TELEFONE}
+          </a>
         </div>
 
-        {/* Progress */}
-        <div className="flex items-center gap-3 mb-10 justify-center">
-          {[1, 2, 3].map(n => (
-            <div key={n} className="flex items-center gap-3">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center font-condensed font-semibold text-sm transition-all duration-300"
-                style={{
-                  background: step >= n ? '#00B4FF' : 'rgba(0,180,255,0.08)',
-                  color: step >= n ? '#fff' : '#8898B3',
-                  border: step >= n ? 'none' : '1px solid rgba(0,180,255,0.15)',
-                }}
-              >
-                {step > n ? '✓' : n}
-              </div>
-              {n < 3 && (
-                <div className="w-16 h-px transition-all duration-300"
-                  style={{ background: step > n ? '#00B4FF' : 'rgba(0,180,255,0.15)' }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
+        <div className="mt-7 md:mt-0 md:col-span-7 lg:col-span-7 lg:col-start-6">
+          {/* Progresso */}
+          <ol className="grid grid-cols-3 gap-2 mb-5" aria-label="Etapas do agendamento">
+            {etapas.map((e, i) => {
+              const n = i + 1
+              return (
+                <li key={e} aria-current={step === n ? 'step' : undefined}>
+                  <span className={`block h-[2px] rounded-full transition-colors duration-300 ${step >= n ? 'bg-white' : 'bg-white/15'}`} />
+                  <span className={`mt-2 block text-[12.5px] md:text-[13px] ${step >= n ? 'text-white' : 'text-white/45'}`}>
+                    {n}. {e}
+                  </span>
+                </li>
+              )
+            })}
+          </ol>
 
-        <div className="glass-strong rounded-2xl p-6 md:p-8" style={{ border: '1px solid rgba(0,180,255,0.12)' }}>
-          {step === 1 && (
-            <div className="space-y-4">
-              <h3 className="font-condensed font-semibold text-lg text-white mb-6 tracking-wide">Seus Dados</h3>
-              <div>
-                <label className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-2 block">Nome completo</label>
-                <input className={inputClass} placeholder="Seu nome" value={form.nome} onChange={e => set('nome', e.target.value)} />
+          <div className="rounded-3xl border border-line bg-graphite p-5 md:p-8">
+            {step === 1 && (
+              <div className="expand space-y-4">
+                <div>
+                  <label htmlFor="ag-nome" className="field-label">Nome completo</label>
+                  <input id="ag-nome" className="field" placeholder="Seu nome" autoComplete="name" value={form.nome} onChange={e => set('nome', e.target.value)} />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="ag-whats" className="field-label">WhatsApp</label>
+                    <input id="ag-whats" className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="(47) 9 0000-0000" value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} />
+                  </div>
+                  <div>
+                    <label htmlFor="ag-veiculo" className="field-label">Veículo</label>
+                    <input id="ag-veiculo" className="field" placeholder="Ex: Honda Civic 2023" value={form.veiculo} onChange={e => set('veiculo', e.target.value)} />
+                  </div>
+                </div>
+                <button
+                  onClick={() => setStep(2)}
+                  disabled={!form.nome || !form.whatsapp || !form.veiculo}
+                  className="btn-primary w-full !mt-6 disabled:opacity-35 disabled:cursor-not-allowed disabled:active:scale-100"
+                >
+                  Continuar
+                </button>
               </div>
-              <div>
-                <label className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-2 block">WhatsApp</label>
-                <input className={inputClass} placeholder="(47) 9 0000-0000" value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} />
-              </div>
-              <div>
-                <label className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-2 block">Veículo</label>
-                <input className={inputClass} placeholder="Ex: Honda Civic 2023" value={form.veiculo} onChange={e => set('veiculo', e.target.value)} />
-              </div>
-              <button
-                onClick={() => setStep(2)}
-                disabled={!form.nome || !form.whatsapp || !form.veiculo}
-                className="neon-btn w-full py-4 text-sm rounded-lg mt-2 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                Próximo →
-              </button>
-            </div>
-          )}
+            )}
 
-          {step === 2 && (
-            <div className="space-y-4">
-              <h3 className="font-condensed font-semibold text-lg text-white mb-6 tracking-wide">Serviço & Data</h3>
-              <div>
-                <label className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-2 block">Serviço desejado</label>
-                <div className="relative">
-                  <select
-                    className={inputClass}
-                    value={form.servico}
-                    onChange={e => set('servico', e.target.value)}
-                    style={{ appearance: 'none', paddingRight: '2.5rem', colorScheme: 'dark', cursor: 'pointer' }}
-                  >
-                    <option value="">Selecione um serviço...</option>
-                    <optgroup label="─ Tratamento Interno ─">
+            {step === 2 && (
+              <div className="expand space-y-4">
+                <div>
+                  <label htmlFor="ag-servico" className="field-label">Serviço desejado</label>
+                  <div className="relative">
+                    <select
+                      id="ag-servico"
+                      className="field appearance-none pr-10 cursor-pointer"
+                      value={form.servico}
+                      onChange={e => set('servico', e.target.value)}
+                      style={{ colorScheme: 'dark' }}
+                    >
+                      <option value="">Selecione um serviço...</option>
+                      <optgroup label="─ Tratamento Interno ─">
                       <option>Higienização Completa</option>
                       <option>Higienização de Bancos de Tecido</option>
                       <option>Higienização e Hidratação de Bancos de Couro</option>
@@ -156,70 +153,71 @@ export default function Agendamento({ servicoSelecionado, onClear, onJumpToStep2
                       <option>Mustang (Pacote)</option>
                       <option>Pacote Mensal de Lavagem Técnica</option>
                     </optgroup>
-                  </select>
-                  <svg
-                    className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                    xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"
+                    </select>
+                    <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 text-white/60" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                      <path d="m3.5 6 4.5 4.5L12.5 6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="ag-data" className="field-label">Data desejada</label>
+                  <input
+                    id="ag-data"
+                    type="date"
+                    className="field"
+                    value={form.data}
+                    onChange={e => set('data', e.target.value)}
+                    style={{ colorScheme: 'dark' }}
+                  />
+                </div>
+                <div className="flex gap-3 !mt-6">
+                  <button onClick={() => setStep(1)} className="btn-ghost flex-1">Voltar</button>
+                  <button
+                    onClick={() => setStep(3)}
+                    disabled={!form.servico || !form.data}
+                    className="btn-primary flex-[1.4] disabled:opacity-35 disabled:cursor-not-allowed disabled:active:scale-100"
                   >
-                    <path fill="#00B4FF" d="M6 8L1 3h10z" />
-                  </svg>
+                    Continuar
+                  </button>
                 </div>
               </div>
-              <div>
-                <label className="font-condensed text-xs tracking-widest uppercase text-[#8898B3] mb-2 block">Data desejada</label>
-                <input
-                  type="date"
-                  className={inputClass}
-                  value={form.data}
-                  onChange={e => set('data', e.target.value)}
-                  style={{ colorScheme: 'dark' }}
-                />
-              </div>
-              <div className="flex gap-3 pt-2">
-                <button onClick={() => setStep(1)} className="outline-btn flex-1 py-4 text-sm rounded-lg">← Voltar</button>
-                <button
-                  onClick={() => setStep(3)}
-                  disabled={!form.servico || !form.data}
-                  className="neon-btn flex-1 py-4 text-sm rounded-lg disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Próximo →
-                </button>
-              </div>
-            </div>
-          )}
+            )}
 
-          {step === 3 && (
-            <div className="space-y-4">
-              <h3 className="font-condensed font-semibold text-lg text-white mb-6 tracking-wide">Confirmar Agendamento</h3>
-              <div className="space-y-3">
-                {[
-                  { l: 'Nome', v: form.nome },
-                  { l: 'WhatsApp', v: form.whatsapp },
-                  { l: 'Veículo', v: form.veiculo },
-                  { l: 'Serviço', v: form.servico },
-                  { l: 'Data', v: form.data },
-                ].map(r => (
-                  <div key={r.l} className="flex justify-between items-center py-3 border-b border-[rgba(0,180,255,0.08)]">
-                    <span className="font-condensed text-xs tracking-widest uppercase text-[#8898B3]">{r.l}</span>
-                    <span className="text-white text-sm font-light">{r.v}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="glass rounded-xl p-4 mt-4" style={{ border: '1px solid rgba(0,180,255,0.15)' }}>
-                <p className="text-[#8898B3] text-xs font-light text-center">
-                  Ao confirmar, você será redirecionado ao WhatsApp com a mensagem já preenchida.
+            {step === 3 && (
+              <div className="expand">
+                <dl>
+                  {[
+                    { l: 'Nome', v: form.nome },
+                    { l: 'WhatsApp', v: form.whatsapp },
+                    { l: 'Veículo', v: form.veiculo },
+                    { l: 'Serviço', v: form.servico },
+                    { l: 'Data', v: dataBR },
+                  ].map(r => (
+                    <div key={r.l} className="flex justify-between gap-4 py-3 border-b border-line text-[15px]">
+                      <dt className="text-muted">{r.l}</dt>
+                      <dd className="text-white text-right">{r.v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="mt-4 text-[13px] text-white/60">
+                  Ao confirmar, o WhatsApp abre com a mensagem já preenchida.
                 </p>
+                <div className="flex gap-3 mt-5">
+                  <button onClick={() => setStep(2)} className="btn-ghost flex-1">Voltar</button>
+                  <button onClick={confirmar} className="btn-primary flex-[1.4]">
+                    <IconWhatsApp /> Enviar
+                  </button>
+                </div>
               </div>
+            )}
+          </div>
 
-              <div className="flex gap-3 pt-2">
-                <button onClick={() => setStep(2)} className="outline-btn flex-1 py-4 text-sm rounded-lg">← Voltar</button>
-                <button onClick={confirmar} className="neon-btn flex-1 py-4 text-sm rounded-lg">
-                  Agendar via WhatsApp
-                </button>
-              </div>
-            </div>
-          )}
+          <p className="md:hidden mt-5 text-center text-[14px] text-muted">
+            Prefere conversar direto?{' '}
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-white underline underline-offset-4 inline-block py-3">
+              {TELEFONE}
+            </a>
+          </p>
         </div>
       </div>
     </section>

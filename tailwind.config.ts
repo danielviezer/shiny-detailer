@@ -4,17 +4,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'neon': '#00B4FF',
-        'neon-dim': '#0080CC',
-        'dark': '#050810',
-        'dark-2': '#080D1A',
-        'dark-3': '#0D1526',
-        'mid': '#112240',
+        ink: '#000000',
+        graphite: '#161616',
+        line: 'rgba(255,255,255,0.14)',
+        muted: '#a3a6ab',
+        silver: '#d4d7db',
+        paper: '#f4f4f2',
       },
       fontFamily: {
-        'display': ['var(--font-display)'],
-        'body': ['var(--font-body)'],
-      }
+        sans: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
+      },
+      screens: {
+        xs: '380px',
+      },
     },
   },
   plugins: [],

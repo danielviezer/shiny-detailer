@@ -1,122 +1,119 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --neon: #00B4FF;
-  --neon-dim: #0080CC;
-  --neon-glow: rgba(0, 180, 255, 0.3);
-  --dark: #050810;
-  --dark-2: #080D1A;
-  --dark-3: #0D1526;
-  --mid: #112240;
-  --text: #E8EDF5;
-  --text-dim: #8898B3;
+  --ink: #000;
+  --paper: #f4f4f2;
+  --muted: #a3a6ab;
+  --line: rgba(255, 255, 255, 0.14);
+  color-scheme: dark;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
-  background: var(--dark);
-  color: var(--text);
-  font-family: 'Barlow', sans-serif;
-  font-weight: 300;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 400;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.font-display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
-.font-condensed { font-family: 'Barlow Condensed', sans-serif; }
+section[id], footer[id] { scroll-margin-top: 64px; }
 
-/* Glassmorphism */
-.glass {
-  background: rgba(8, 13, 26, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 180, 255, 0.08);
+/* Largura expandida da Archivo: a "voz" da marca, como a tipografia aberta do logo */
+.font-wide {
+  font-stretch: 125%;
+  font-variation-settings: 'wdth' 125;
+}
+.font-semiwide {
+  font-stretch: 112%;
+  font-variation-settings: 'wdth' 112;
 }
 
-.glass-strong {
-  background: rgba(8, 13, 26, 0.85);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(0, 180, 255, 0.12);
+/* Foco visível em tudo */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
-/* Neon glow effects */
-.neon-text {
-  color: var(--neon);
-  text-shadow: 0 0 20px rgba(0, 180, 255, 0.5), 0 0 40px rgba(0, 180, 255, 0.2);
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 min-h-[48px] px-6 rounded-full text-[15px] font-medium transition-[background-color,color,border-color,transform] duration-200 active:scale-[0.98] select-none;
+  }
+  .btn-primary {
+    @apply btn bg-white text-black hover:bg-silver;
+  }
+  .btn-ghost {
+    @apply btn border border-white/30 text-white hover:border-white hover:bg-white/5;
+  }
+  .field {
+    @apply w-full min-h-[50px] rounded-xl bg-white/[0.04] border border-white/15 px-4 text-[16px] text-white placeholder:text-white/40 transition-colors focus:outline-none focus:border-white focus:bg-white/[0.07];
+  }
+  .field-label {
+    @apply block text-[13px] text-muted mb-1.5;
+  }
 }
 
-.neon-border {
-  border: 1px solid var(--neon);
-  box-shadow: 0 0 15px rgba(0, 180, 255, 0.2), inset 0 0 15px rgba(0, 180, 255, 0.05);
+/* Foto P&B: identidade do cartão e do logo */
+.photo-mono {
+  filter: grayscale(1) contrast(1.08) brightness(0.92);
+  transition: filter 700ms ease;
+}
+.photo-reveal[data-active='true'] .photo-mono,
+.photo-reveal:hover .photo-mono {
+  filter: grayscale(0) contrast(1) brightness(1);
 }
 
-.neon-btn {
-  background: linear-gradient(135deg, var(--neon) 0%, var(--neon-dim) 100%);
-  color: #fff;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 180, 255, 0.3);
+/* O momento da página: um reflexo de luz atravessa a foto, como no verniz polido */
+.shine { position: relative; overflow: hidden; }
+.shine::after {
+  content: '';
+  position: absolute;
+  inset: -20% -60%;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.05) 44%,
+    rgba(255, 255, 255, 0.42) 50%,
+    rgba(255, 255, 255, 0.05) 56%,
+    transparent 62%
+  );
+  mix-blend-mode: soft-light;
+  transform: translateX(-70%);
+  animation: sweep 2.2s cubic-bezier(0.6, 0, 0.2, 1) 0.5s 1 forwards;
+  pointer-events: none;
+}
+@keyframes sweep {
+  to { transform: translateX(70%); }
 }
 
-.neon-btn:hover {
-  box-shadow: 0 6px 30px rgba(0, 180, 255, 0.5);
-  transform: translateY(-2px);
+/* Entrada do hero */
+.rise { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.1, 1) both; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
-.outline-btn {
-  background: transparent;
-  color: var(--neon);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 1px solid rgba(0, 180, 255, 0.4);
-  transition: all 0.3s ease;
-}
-
-.outline-btn:hover {
-  border-color: var(--neon);
-  background: rgba(0, 180, 255, 0.08);
-  box-shadow: 0 0 20px rgba(0, 180, 255, 0.15);
-}
-
-/* Section divider line */
-.neon-line {
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--neon), transparent);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--dark); }
-::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 2px; }
-
-/* Card hover */
-.card-hover {
-  transition: all 0.4s ease;
-}
-.card-hover:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 180, 255, 0.25) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 180, 255, 0.08);
-}
-
-/* Tab styles */
-.tab-active {
-  color: var(--neon) !important;
-  border-bottom-color: var(--neon) !important;
+/* Expandir item de serviço */
+.expand { animation: expand 0.32s ease both; }
+@keyframes expand {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .shine::after { display: none; }
+}

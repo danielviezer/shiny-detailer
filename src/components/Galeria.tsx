@@ -1,52 +1,99 @@
 'use client'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
+// ratio = largura/altura real da foto, pra não cortar o carro no carrossel
 const fotos = [
-  { src: '/images/virtus_frente.jpg', label: 'VW Virtus', sub: 'Lavagem Detalhada', pos: 'center' },
-  { src: '/images/cla_frente.jpg', label: 'Mercedes CLA', sub: 'Coating Cerâmico', pos: 'center' },
-  { src: '/images/pickup_frente.jpg', label: 'Pick-up Preta', sub: 'Detalhamento Completo', pos: 'center' },
-  { src: '/images/pickup_motor.jpg', label: 'Pick-up Preta', sub: 'Lavagem de Motor', pos: 'center 55%' },
-  { src: '/images/cla_interior.jpg', label: 'Mercedes CLA', sub: 'Higienização Premium', pos: 'center 48%' },
-  { src: '/images/fox_frente.jpg', label: 'VW Fox', sub: 'Lavagem Artesanal', pos: 'center 60%' },
+  { src: '/images/cla_frente.jpg', label: 'Mercedes CLA', sub: 'Coating cerâmico', pos: '50% 60%', ratio: 1260 / 1170, grid: 'md:col-start-2 md:row-start-1' },
+  { src: '/images/cla_interior.jpg', label: 'Mercedes CLA', sub: 'Higienização premium', pos: '50% 45%', ratio: 3 / 4, grid: 'md:col-start-1 md:row-start-1 md:row-span-2' },
+  { src: '/images/pickup_frente.jpg', label: 'Pick-up Chevrolet', sub: 'Detalhamento completo', pos: '50% 55%', ratio: 1206 / 1044, grid: 'md:col-start-3 md:row-start-1' },
+  { src: '/images/pickup_motor.jpg', label: 'Pick-up Chevrolet', sub: 'Lavagem de motor', pos: '50% 55%', ratio: 3 / 4, grid: 'md:col-start-4 md:row-start-1 md:row-span-2' },
+  { src: '/images/virtus_frente.jpg', label: 'VW Virtus', sub: 'Lavagem detalhada', pos: '50% 60%', ratio: 1213 / 1134, grid: 'md:col-start-2 md:row-start-2' },
+  { src: '/images/fox_frente.jpg', label: 'VW Fox', sub: 'Lavagem artesanal', pos: '50% 60%', ratio: 1260 / 1224, grid: 'md:col-start-3 md:row-start-2' },
 ]
 
 export default function Galeria() {
+  const trilho = useRef<HTMLUListElement>(null)
+  const [ativo, setAtivo] = useState(0)
+
+  // No celular, a foto centralizada no carrossel ganha cor
+  useEffect(() => {
+    const root = trilho.current
+    if (!root || !window.matchMedia('(max-width: 767px)').matches) return
+    const items = Array.from(root.children) as HTMLElement[]
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) setAtivo(items.indexOf(e.target as HTMLElement))
+        })
+      },
+      { root, threshold: 0.75 }
+    )
+    items.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+
+  const irPara = (i: number) => {
+    const root = trilho.current
+    const el = root?.children[i] as HTMLElement | undefined
+    if (root && el) root.scrollTo({ left: el.offsetLeft - root.offsetLeft - 16, behavior: 'smooth' })
+  }
+
   return (
-    <section id="galeria" className="py-12 md:py-32" style={{ background: '#080D1A' }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-10">
-        <div className="mb-6 md:mb-12">
-          <div className="neon-line mb-4" />
-          <h2 className="font-display text-4xl md:text-6xl text-white mb-3">NOSSOS TRABALHOS</h2>
-          <p className="text-[#8898B3] font-light">Cada projeto tratado com obsessão pelos detalhes.</p>
+    <section id="galeria" className="py-11 md:py-28 border-t border-line">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-10">
+        <div className="flex items-end justify-between gap-6">
+          <h2 className="font-wide font-light text-[28px] md:text-[40px] leading-[1.08] tracking-[-0.01em]">
+            Trabalhos no studio
+          </h2>
+          <p className="hidden md:block text-[15px] text-white/60 max-w-[36ch] text-right">
+            Passe o mouse para ver a foto em cores.
+          </p>
         </div>
 
-        {/* Grid uniforme 3x2 */}
-        <div className="no-scrollbar flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
-          {fotos.map(f => (
-            <div
+        <ul
+          ref={trilho}
+          className="no-scrollbar mt-6 md:mt-10 -mx-4 px-4 md:mx-0 md:px-0 flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-4
+            md:grid md:gap-4 md:overflow-visible md:[grid-template-columns:1.5fr_1.08fr_1.08fr_1.5fr] md:[grid-template-rows:repeat(2,minmax(0,1fr))] md:h-[min(62vw,640px)]"
+          aria-label="Fotos de veículos atendidos"
+        >
+          {fotos.map((f, i) => (
+            <li
               key={f.src}
-              className="relative overflow-hidden rounded-xl group aspect-[4/3] shrink-0 w-[82%] sm:w-[48%] snap-center md:w-auto"
+              data-active={ativo === i}
+              className={`photo-reveal group relative shrink-0 snap-start h-[300px] xs:h-[320px] [aspect-ratio:var(--r)] md:h-auto md:aspect-auto rounded-2xl overflow-hidden bg-graphite ${f.grid}`}
+              style={{ '--r': f.ratio } as React.CSSProperties}
             >
               <Image
                 src={f.src}
-                alt={f.label}
+                alt={`${f.label}: ${f.sub.toLowerCase()}`}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(min-width: 768px) 30vw, 85vw"
+                className="photo-mono object-cover"
                 style={{ objectPosition: f.pos }}
               />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-transparent to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300" />
-              {/* Neon border on hover */}
-              <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-[rgba(0,180,255,0.3)] transition-all duration-300" />
-              {/* Label */}
-              <div className="absolute bottom-4 left-4">
-                <div className="font-condensed font-semibold text-white text-sm tracking-wide">{f.label}</div>
-                <div className="font-condensed text-[#00B4FF] text-xs tracking-widest uppercase">{f.sub}</div>
+              <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 to-transparent pointer-events-none" />
+              <div className="absolute left-4 bottom-3.5 right-4">
+                <p className="text-[15px] text-white leading-tight">{f.label}</p>
+                <p className="text-[13px] text-white/70">{f.sub}</p>
               </div>
-            </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="md:hidden mt-4 flex justify-center gap-1" aria-label="Posição no carrossel">
+          {fotos.map((f, i) => (
+            <button
+              key={f.src}
+              onClick={() => irPara(i)}
+              aria-label={`Ver foto ${i + 1} de ${fotos.length}`}
+              aria-current={ativo === i}
+              className="w-7 h-11 flex items-center justify-center"
+            >
+              <span className={`block h-[2px] rounded-full transition-all duration-300 ${ativo === i ? 'w-6 bg-white' : 'w-3 bg-white/30'}`} />
+            </button>
           ))}
         </div>
-        <p className="md:hidden text-center text-[#8898B3] text-xs font-light mt-3">← arraste pro lado →</p>
       </div>
     </section>
   )
